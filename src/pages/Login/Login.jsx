@@ -1,5 +1,5 @@
 import React from 'react'
-import LoginForm from '../../components/LoginForm/LoginForm'
+import Button from '@material-ui/core/Button';
 import styles from './Login.module.css';
 
 const Login = () => {
@@ -8,7 +8,10 @@ const Login = () => {
       <h1>Ryan Blog Admin</h1>
       <p>学无止境</p>
       <div>
-        <LoginForm />
+        <h1>Login</h1>
+        <Button variant="contained" color="primary">
+          你好，世界
+        </Button>
       </div>
     </div>
   )
