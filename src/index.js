@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import 'typeface-roboto';
 import { Provider } from 'react-redux'
 import App from './components/AppContainer'
-// import App from './components/App'
 
 import * as serviceWorker from './serviceWorker';
 
@@ -13,7 +12,6 @@ ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  // <App />,
   document.getElementById('root'),
 );
 

@@ -30,8 +30,8 @@ const Login = ({ classes, ...props }) => (
           textColor="primary"
           centered
         >
-          <Tab label="Login" classes={{ root: classes.tab }} />
-          <Tab label="New User" classes={{ root: classes.tab }} />
+          <Tab label="Login" disableRipple classes={{ root: classes.tab }} />
+          <Tab label="New User" disableRipple classes={{ root: classes.tab }} />
         </Tabs>
         {props.activeTabId === 0 && (
           <React.Fragment>
@@ -241,11 +241,11 @@ const styles = theme => ({
   },
   logotypeImage: {
     width: 165,
-    marginBottom: theme.spacing(4)
+    marginBottom: theme.spacing(10)
   },
   logotypeText: {
     color: "white",
-    fontWeight: 500,
+    fontWeight: 400,
     fontSize: 84,
     [theme.breakpoints.down("md")]: {
       fontSize: 48

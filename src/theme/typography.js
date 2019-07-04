@@ -4,9 +4,9 @@ export default {
   h1: {
     color: palette.text.primary,
     fontWeight: '500',
-    fontSize: '35px',
+    fontSize: '48px',
     letterSpacing: '-0.24px',
-    lineHeight: '40px'
+    lineHeight: '48px'
   },
   h2: {
     color: palette.text.primary,

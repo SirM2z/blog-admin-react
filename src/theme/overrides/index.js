@@ -12,6 +12,7 @@ import MuiTab from './MuiTab';
 import MuiTableCell from './MuiTableCell';
 import MuiTableRow from './MuiTableRow';
 import MuiTabs from './MuiTabs';
+import MuiTouchRipple from './MuiTouchRipple';
 
 export default {
   MuiButton,
@@ -27,5 +28,6 @@ export default {
   MuiTab,
   MuiTableCell,
   MuiTableRow,
-  MuiTabs
+  MuiTabs,
+  MuiTouchRipple
 };

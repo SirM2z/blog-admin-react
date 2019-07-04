@@ -9,9 +9,6 @@ import { withStyles } from '@material-ui/core';
 // Material components
 import { CircularProgress, Typography } from '@material-ui/core';
 
-// Shared layouts
-import { Dashboard as DashboardLayout } from 'layouts';
-
 // Shared services
 import { getUsers } from 'services/user';
 
@@ -103,12 +100,10 @@ class UserList extends Component {
     const { selectedUsers } = this.state;
 
     return (
-      <DashboardLayout title="Users">
-        <div className={classes.root}>
-          <UsersToolbar selectedUsers={selectedUsers} />
-          <div className={classes.content}>{this.renderUsers()}</div>
-        </div>
-      </DashboardLayout>
+      <div className={classes.root}>
+        <UsersToolbar selectedUsers={selectedUsers} />
+        <div className={classes.content}>{this.renderUsers()}</div>
+      </div>
     );
   }
 }

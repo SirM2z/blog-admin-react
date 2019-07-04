@@ -8,7 +8,7 @@ export default {
     textTransform: 'none',
     fontSize: '14px',
     '@media (min-width: 960px)': {
-      minWidth: '100px'
+      minWidth: '160px'
     },
     '&$selected': {
       fontWeight: 500
