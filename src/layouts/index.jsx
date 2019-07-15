@@ -1,17 +1,14 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import classNames from 'classnames';
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import { withStyles, withWidth } from '@material-ui/core';
 import { Drawer } from '@material-ui/core';
 
+// Routes
+import Routes from '../Routes';
 import { Sidebar, Topbar, Footer } from './components';
 import styles from './styles';
-
-// pages
-import Users from 'pages/UserList';
-import Account from 'pages/Account';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -35,7 +32,7 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { classes, width, title, children } = this.props;
+    const { classes, width, title } = this.props;
     const { isOpen } = this.state;
 
     const isMobile = ['xs', 'sm', 'md'].includes(width);
@@ -43,38 +40,33 @@ class Dashboard extends Component {
     const shiftContent = isOpen && !isMobile;
 
     return (
-      <Router>
-        <Fragment>
-          <Topbar
-            className={classNames(classes.topbar, {
-              [classes.topbarShift]: shiftTopbar
-            })}
-            isSidebarOpen={isOpen}
-            onToggleSidebar={this.handleToggleOpen}
-            title={title}
-          />
-          <Drawer
-            anchor="left"
-            classes={{ paper: classes.drawerPaper }}
-            onClose={this.handleClose}
-            open={isOpen}
-            variant={isMobile ? 'temporary' : 'persistent'}
-          >
-            <Sidebar className={classes.sidebar} />
-          </Drawer>
-          <main
-            className={classNames(classes.content, {
-              [classes.contentShift]: shiftContent
-            })}
-          >
-            <Switch>
-              <Route path="/app/users" component={Users} />
-              <Route path="/app/account" component={Account} />
-            </Switch>
-            <Footer />
-          </main>
-        </Fragment>
-      </Router>
+      <Fragment>
+        <Topbar
+          className={classNames(classes.topbar, {
+            [classes.topbarShift]: shiftTopbar
+          })}
+          isSidebarOpen={isOpen}
+          onToggleSidebar={this.handleToggleOpen}
+          title={title}
+        />
+        <Drawer
+          anchor="left"
+          classes={{ paper: classes.drawerPaper }}
+          onClose={this.handleClose}
+          open={isOpen}
+          variant={isMobile ? 'temporary' : 'persistent'}
+        >
+          <Sidebar className={classes.sidebar} />
+        </Drawer>
+        <main
+          className={classNames(classes.content, {
+            [classes.contentShift]: shiftContent
+          })}
+        >
+          <Routes {...this.props} />
+          <Footer />
+        </main>
+      </Fragment>
     );
   }
 }

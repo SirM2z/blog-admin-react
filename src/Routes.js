@@ -1,56 +1,91 @@
-import React, { Component } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import React from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Layout from './layouts';
+// pages
 import Login from './pages/Login/LoginContainer';
+import Users from './pages/UserList';
+import Account from './pages/Account';
 
-const PrivateRoute = ({ component, ...rest }) => {
-  return (
-    <Route
-      {...rest} render={props => (
-      localStorage.getItem('id_token') ? (
-        React.createElement(component, props)
-      ) : (
-        <Redirect
-          to={{
-            pathname: '/login',
-            state: { from: props.location },
-          }}
-        />
-      )
-    )}
-    />
-  );
-};
+function NoMatch({location}) {
+  return (<h3>
+    No match for <code>{location.pathname}</code>
+  </h3>);
+}
 
-const PublicRoute = ({ component, ...rest }) => {
-  return (
-    <Route
-      {...rest} render={props => (
-      localStorage.getItem('id_token') ? (
-        <Redirect
-          to={{
-            pathname: '/',
-          }}
-        />
-      ) : (
-        React.createElement(component, props)
-      )
-    )}
-    />
-  );
-};
+const isLogin = true;
 
-export default class Routes extends Component {
-  render() {
+const pageRoutes = [
+  {
+    path: "/login",
+    component: Login
+  },
+  {
+    path: "/app",
+    component: Layout,
+    routes: [
+      {
+        path: "/app",
+        redirect: "/app/users"
+      },
+      {
+        path: "/app/users",
+        component: Users
+      },
+      {
+        path: "/app/account",
+        auth: true,
+        component: Account
+      },
+      {
+        component: NoMatch
+      }
+    ]
+  },
+  {
+    component: NoMatch
+  }
+]
+
+function RouteWithSubRoutes(route, i) {
+  const uniqueKey = route.path || i;
+  if (route.redirect) {
     return (
-      <Switch>
-        <Route exact path="/" render={() => <Redirect to="/app/users" />} />
-        <Route exact path="/app" render={() => <Redirect to="/app/users" />} />
-        <PrivateRoute path="/app" component={Layout} />
-        <PublicRoute path="/login" component={Login} />
-        <Route component={Login} />
-      </Switch>
+      <Redirect key={uniqueKey + '-redirect'} exact from={route.path} to={route.redirect} />
+    )
+  } else {
+    return (
+      <Route
+        key={uniqueKey}
+        exact={!route.routes}
+        path={route.path}
+        render={props => {
+          // pass the sub-routes down to keep nesting
+          if (route.auth) {
+            if (isLogin) {
+              return <route.component key={uniqueKey} {...props} routes={route.routes} />
+            } else {
+              return <Redirect to={{
+                pathname: '/login',
+                state: {
+                  from: route.path
+                }
+              }} />
+            }
+          } else {
+            return <route.component key={uniqueKey} {...props} routes={route.routes} />
+          }
+        }}
+      />
     );
   }
+}
+
+export default function Routes({routes}) {
+  const currentRoutes = routes || pageRoutes;
+  return (
+    <Switch>
+      {currentRoutes.map((route, i) => RouteWithSubRoutes(route, i))}
+    </Switch>
+  )
 }

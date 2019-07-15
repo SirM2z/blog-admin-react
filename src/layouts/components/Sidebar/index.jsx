@@ -16,20 +16,14 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  ListSubheader,
   Typography
 } from '@material-ui/core';
 
 // Material icons
 import {
-  DashboardOutlined as DashboardIcon,
   PeopleOutlined as PeopleIcon,
-  ShoppingBasketOutlined as ShoppingBasketIcon,
-  LockOpenOutlined as LockOpenIcon,
-  TextFields as TextFieldsIcon,
-  ImageOutlined as ImageIcon,
-  InfoOutlined as InfoIcon,
   AccountBoxOutlined as AccountBoxIcon,
+  Note as NoteIcon,
   SettingsOutlined as SettingsIcon
 } from '@material-ui/icons';
 
@@ -47,13 +41,19 @@ class Sidebar extends Component {
         <div className={classes.logoWrapper}>
           <Link
             className={classes.logoLink}
-            to="/"
+            to="/app"
           >
-            <img
+            <Typography
+              className={classes.nameText}
+              variant="h3"
+            >
+              Ryan's Admin
+            </Typography>
+            {/* <img
               alt="Brainalytica logo"
               className={classes.logoImage}
               src="/images/logos/brainalytica_logo.svg"
-            />
+            /> */}
           </Link>
         </div>
         <Divider className={classes.logoDivider} />
@@ -62,20 +62,20 @@ class Sidebar extends Component {
             <Avatar
               alt="Roman Kutepov"
               className={classes.avatar}
-              src="/images/avatars/avatar_1.png"
+              src="/images/avatars/avatar_6.png"
             />
           </Link>
           <Typography
             className={classes.nameText}
             variant="h6"
           >
-            Roman Kutepov
+            Ryan
           </Typography>
           <Typography
             className={classes.bioText}
             variant="caption"
           >
-            Brain Director
+            Front-end Engineer
           </Typography>
         </div>
         <Divider className={classes.profileDivider} />
@@ -87,28 +87,14 @@ class Sidebar extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/dashboard"
-          >
-            <ListItemIcon className={classes.listItemIcon}>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary="Dashboard"
-            />
-          </ListItem>
-          <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/users"
+            to="/app/users"
           >
             <ListItemIcon className={classes.listItemIcon}>
               <PeopleIcon />
             </ListItemIcon>
             <ListItemText
               classes={{ primary: classes.listItemText }}
-              primary="Users"
+              primary="用户管理"
             />
           </ListItem>
           <ListItem
@@ -118,67 +104,25 @@ class Sidebar extends Component {
             to="/products"
           >
             <ListItemIcon className={classes.listItemIcon}>
-              <ShoppingBasketIcon />
+              <NoteIcon />
             </ListItemIcon>
             <ListItemText
               classes={{ primary: classes.listItemText }}
-              primary="Products"
+              primary="文章管理"
             />
           </ListItem>
           <ListItem
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/sign-in"
-          >
-            <ListItemIcon className={classes.listItemIcon}>
-              <LockOpenIcon />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary="Authentication"
-            />
-          </ListItem>
-          <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/typography"
-          >
-            <ListItemIcon className={classes.listItemIcon}>
-              <TextFieldsIcon />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary="Typography"
-            />
-          </ListItem>
-          <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/icons"
-          >
-            <ListItemIcon className={classes.listItemIcon}>
-              <ImageIcon />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary="Icons and Images"
-            />
-          </ListItem>
-          <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/account"
+            to="/app/account"
           >
             <ListItemIcon className={classes.listItemIcon}>
               <AccountBoxIcon />
             </ListItemIcon>
             <ListItemText
               classes={{ primary: classes.listItemText }}
-              primary="Account"
+              primary="账号信息"
             />
           </ListItem>
           <ListItem
@@ -192,32 +136,7 @@ class Sidebar extends Component {
             </ListItemIcon>
             <ListItemText
               classes={{ primary: classes.listItemText }}
-              primary="Settings"
-            />
-          </ListItem>
-        </List>
-        <Divider className={classes.listDivider} />
-        <List
-          component="div"
-          disablePadding
-          subheader={
-            <ListSubheader className={classes.listSubheader}>
-              Support
-            </ListSubheader>
-          }
-        >
-          <ListItem
-            className={classes.listItem}
-            component="a"
-            href="https://devias.io/contact-us"
-            target="_blank"
-          >
-            <ListItemIcon className={classes.listItemIcon}>
-              <InfoIcon />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary="Customer support"
+              primary="系统管理"
             />
           </ListItem>
         </List>
