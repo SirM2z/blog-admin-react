@@ -2,10 +2,8 @@ import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Layout from './layouts';
-// pages
-import Login from './pages/Login/LoginContainer';
+import Login from './pages/Login';
 import Users from './pages/UserList';
-import Account from './pages/Account';
 
 function NoMatch({location}) {
   return (<h3>
@@ -31,11 +29,6 @@ const pageRoutes = [
       {
         path: "/app/users",
         component: Users
-      },
-      {
-        path: "/app/account",
-        auth: true,
-        component: Account
       },
       {
         component: NoMatch

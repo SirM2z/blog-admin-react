@@ -14,6 +14,9 @@ const theme = createMuiTheme({
   zIndex: {
     appBar: 1200,
     drawer: 1100
+  },
+  layout: {
+    drawerWidth: 240
   }
 });
 
