@@ -20,6 +20,8 @@ import {
 
 import NotificationList from './NotificationList'
 import { getNotifications } from 'services/notification';
+import { setLS } from 'utils';
+import { USER_TOKEN } from 'constant';
 
 const Topbar = ({
   className,
@@ -32,6 +34,7 @@ const Topbar = ({
   const notificationsLimit = 4;
   const rootClassName = classNames(classes.root, className);
   function handleSignOut() {
+    setLS(USER_TOKEN, '');
     history.push('/login');
   }
 

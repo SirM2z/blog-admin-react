@@ -192,7 +192,7 @@ Sidebar.propTypes = {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: theme.layout.drawerWidth,
+    // width: theme.layout.drawerWidth,
     backgroundColor: theme.palette.common.white,
     display: 'flex',
     flexDirection: 'column',

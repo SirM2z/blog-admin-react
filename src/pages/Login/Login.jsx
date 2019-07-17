@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { withRouter } from 'react-router-dom';
 import {
   Grid,
   CircularProgress,
@@ -11,45 +12,70 @@ import {
 } from "@material-ui/core";
 import classnames from "classnames";
 import { makeStyles } from '@material-ui/core/styles';
+import { toast } from 'react-toastify';
 
 import logo from "./logo.svg";
 import google from "assets/svg/google.svg";
+import { login, register } from 'services/user';
+import { setLS } from 'utils';
+import { USER_TOKEN } from 'constant';
 
-const Login = () => {
+const Login = ({ history }) => {
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState(false);
 
   const [activeTabId, setActiveTabId] = useState(0);
   function handleTabChange(e, id) {
+    setLoginError(false);
     setActiveTabId(id);
   }
 
-  const [nameValue, setNameValue] = useState("");
-  const [loginValue, setLoginValue] = useState("");
-  const [passwordValue, setPasswordValue] = useState("");
+  const [username, setUsername] = useState("Ryan");
+  const [email, setEmail] = useState("ryan@ryanc.top");
+  const [password, setPassword] = useState("password");
   function handleInput(e, input = "login") {
     if (loginError) {
       setLoginError(false);
     }
     if (input === "login") {
-      setLoginValue(e.target.value);
+      setEmail(e.target.value);
     } else if (input === "password") {
-      setPasswordValue(e.target.value);
+      setPassword(e.target.value);
     } else if (input === "name") {
-      setNameValue(e.target.value);
+      setUsername(e.target.value);
     }
   }
-  function loginUser(loginValue, passwordValue) {
-    console.log(loginValue, passwordValue);
+  function loginUser(email, password) {
     setIsLoading(true);
-    setTimeout(() => {
-      setLoginError(true);
+    login(email, password).then((res) => {
       setIsLoading(false);
-    }, 1000)
+      console.log({res});
+      setLS(USER_TOKEN, res.result.token);
+      history.push('/app');
+    }).catch(() => {
+      setIsLoading(false);
+      setLoginError(true);
+    });
+  }
+  function registerUser(username, email, password) {
+    setIsLoading(true);
+    register(username, email, password).then((res) => {
+      setIsLoading(false);
+      console.log({res});
+      toast.success(`🦄 注册成功`);
+      setActiveTabId(0);
+    }).catch(() => {
+      setIsLoading(false);
+      setLoginError(true);
+    });
   }
   function handleLoginButtonClick() {
-    loginUser(loginValue, passwordValue);
+    if (activeTabId === 0) { // 登录
+      loginUser(email, password);
+    } else { // 注册
+      registerUser(username, email, password);
+    }
   }
 
   return (
@@ -97,7 +123,7 @@ const Login = () => {
                     input: classes.textField
                   }
                 }}
-                value={loginValue}
+                value={email}
                 onChange={e => handleInput(e, "login")}
                 margin="normal"
                 placeholder="Email Adress"
@@ -112,7 +138,7 @@ const Login = () => {
                     input: classes.textField
                   }
                 }}
-                value={passwordValue}
+                value={password}
                 onChange={e => handleInput(e, "password")}
                 margin="normal"
                 placeholder="Password"
@@ -125,8 +151,8 @@ const Login = () => {
                 ) : (
                   <Button
                     disabled={
-                      loginValue.length === 0 ||
-                      passwordValue.length === 0
+                      email.length === 0 ||
+                      password.length === 0
                     }
                     onClick={handleLoginButtonClick}
                     variant="contained"
@@ -167,7 +193,7 @@ const Login = () => {
                     input: classes.textField
                   }
                 }}
-                value={nameValue}
+                value={username}
                 onChange={e => handleInput(e, "name")}
                 margin="normal"
                 placeholder="Full Name"
@@ -182,7 +208,7 @@ const Login = () => {
                     input: classes.textField
                   }
                 }}
-                value={loginValue}
+                value={email}
                 onChange={e => handleInput(e, "login")}
                 margin="normal"
                 placeholder="Email Adress"
@@ -197,7 +223,7 @@ const Login = () => {
                     input: classes.textField
                   }
                 }}
-                value={passwordValue}
+                value={password}
                 onChange={e => handleInput(e, "password")}
                 margin="normal"
                 placeholder="Password"
@@ -211,9 +237,9 @@ const Login = () => {
                   <Button
                     onClick={handleLoginButtonClick}
                     disabled={
-                      loginValue.length === 0 ||
-                      passwordValue.length === 0 ||
-                      nameValue.length === 0
+                      email.length === 0 ||
+                      password.length === 0 ||
+                      username.length === 0
                     }
                     size="large"
                     variant="contained"
@@ -398,4 +424,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default Login;
+export default withRouter(Login);

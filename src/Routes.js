@@ -1,6 +1,8 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
+import { USER_TOKEN } from './constant';
+import { getLS } from './utils';
 import Layout from './layouts';
 import Login from './pages/Login';
 import Users from './pages/UserList';
@@ -10,8 +12,6 @@ function NoMatch({location}) {
     No match for <code>{location.pathname}</code>
   </h3>);
 }
-
-const isLogin = true;
 
 const pageRoutes = [
   {
@@ -28,6 +28,7 @@ const pageRoutes = [
       },
       {
         path: "/app/users",
+        auth: true,
         component: Users
       },
       {
@@ -55,7 +56,7 @@ function RouteWithSubRoutes(route, i) {
         render={props => {
           // pass the sub-routes down to keep nesting
           if (route.auth) {
-            if (isLogin) {
+            if (getLS(USER_TOKEN)) {
               return <route.component key={uniqueKey} {...props} routes={route.routes} />
             } else {
               return <Redirect to={{
