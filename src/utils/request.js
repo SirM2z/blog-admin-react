@@ -47,7 +47,7 @@ request.interceptors.response.use(
   response => {
     const res = response.data;
     if (res.status === 'success') {
-      return res;
+      return res.result;
     } else {
       const msg = res.message || '服务器出错';
       toast.warn(`🦄 ${msg}`)

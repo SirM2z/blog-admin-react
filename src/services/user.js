@@ -18,3 +18,12 @@ export const login = (email, password) => {
 export const register = (username, email, password) => {
   return req.post('/register', {username, email, password});
 }
+
+/**
+ * 用户列表
+ * @param {number} page 页码
+ * @param {number} pageSize 每页数量
+ */
+export const userList = (page, pageSize) => {
+  return req.get('/user', {page, pageSize});
+}

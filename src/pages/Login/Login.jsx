@@ -50,8 +50,8 @@ const Login = ({ history }) => {
     setIsLoading(true);
     login(email, password).then((res) => {
       setIsLoading(false);
-      setLS(USER_INFO, res.result);
-      setLS(USER_TOKEN, res.result.token);
+      setLS(USER_INFO, res);
+      setLS(USER_TOKEN, res.token);
       history.push('/app');
     }).catch(() => {
       setIsLoading(false);
