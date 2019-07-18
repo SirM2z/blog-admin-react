@@ -23,6 +23,9 @@ import {
   StarBorder as StarBorderIcon,
 } from '@material-ui/icons';
 
+import { getLS } from 'utils';
+import { USER_INFO } from 'constant';
+
 const ListItemLink = React.forwardRef((props, ref) => (
   <NavLink innerRef={ref} {...props} />
 ));
@@ -57,7 +60,7 @@ const Sidebar = ({ className, isSidebarOpen }) => {
               className={classes.nameText}
               variant="h6"
             >
-              Ryan
+              {getLS(USER_INFO).username || '你做了什么'}
             </Typography>
             <Typography
               className={classes.bioText}

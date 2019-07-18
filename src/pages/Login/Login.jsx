@@ -18,16 +18,16 @@ import logo from "./logo.svg";
 import google from "assets/svg/google.svg";
 import { login, register } from 'services/user';
 import { setLS } from 'utils';
-import { USER_TOKEN } from 'constant';
+import { USER_TOKEN, USER_INFO } from 'constant';
 
 const Login = ({ history }) => {
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
-  const [loginError, setLoginError] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
   const [activeTabId, setActiveTabId] = useState(0);
   function handleTabChange(e, id) {
-    setLoginError(false);
+    setLoginError('');
     setActiveTabId(id);
   }
 
@@ -36,7 +36,7 @@ const Login = ({ history }) => {
   const [password, setPassword] = useState("password");
   function handleInput(e, input = "login") {
     if (loginError) {
-      setLoginError(false);
+      setLoginError('');
     }
     if (input === "login") {
       setEmail(e.target.value);
@@ -50,24 +50,23 @@ const Login = ({ history }) => {
     setIsLoading(true);
     login(email, password).then((res) => {
       setIsLoading(false);
-      console.log({res});
+      setLS(USER_INFO, res.result);
       setLS(USER_TOKEN, res.result.token);
       history.push('/app');
     }).catch(() => {
       setIsLoading(false);
-      setLoginError(true);
+      setLoginError('Something is wrong with your login or password :(');
     });
   }
   function registerUser(username, email, password) {
     setIsLoading(true);
     register(username, email, password).then((res) => {
       setIsLoading(false);
-      console.log({res});
       toast.success(`🦄 注册成功`);
       setActiveTabId(0);
     }).catch(() => {
       setIsLoading(false);
-      setLoginError(true);
+      setLoginError('Username or email is exist :(');
     });
   }
   function handleLoginButtonClick() {
@@ -110,9 +109,9 @@ const Login = ({ history }) => {
                 <Typography className={classes.formDividerWord}>or</Typography>
                 <div className={classes.formDivider} />
               </div>
-              <Fade in={loginError}>
+              <Fade in={Boolean(loginError)}>
                 <Typography color="secondary" className={classes.errorMessage}>
-                  Something is wrong with your login or password :(
+                  {loginError}
                 </Typography>
               </Fade>
               <TextField
@@ -180,9 +179,9 @@ const Login = ({ history }) => {
               <Typography variant="h2" className={classes.subGreeting}>
                 Create your account
               </Typography>
-              <Fade in={loginError}>
+              <Fade in={Boolean(loginError)}>
                 <Typography color="secondary" className={classes.errorMessage}>
-                  Something is wrong with your login or password :(
+                  {loginError}
                 </Typography>
               </Fade>
               <TextField
@@ -270,7 +269,7 @@ const Login = ({ history }) => {
           )}
         </div>
         <Typography color="primary" className={classes.copyright}>
-          © 2014-2019 Flatlogic, LLC. All rights reserved.
+          &copy; Ryan. 2019
         </Typography>
       </div>
     </Grid>

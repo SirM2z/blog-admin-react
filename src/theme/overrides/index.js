@@ -1,5 +1,6 @@
 import MuiButton from './MuiButton';
 import MuiChip from './MuiChip';
+import MuiCheckbox from './MuiCheckbox';
 import MuiFab from './MuiFab';
 import MuiFilledInput from './MuiFilledInput';
 import MuiIconButton from './MuiIconButton';
@@ -17,6 +18,7 @@ import MuiTouchRipple from './MuiTouchRipple';
 export default {
   MuiButton,
   MuiChip,
+  MuiCheckbox,
   MuiFab,
   MuiFilledInput,
   MuiIconButton,
