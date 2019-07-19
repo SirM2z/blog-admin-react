@@ -62,4 +62,26 @@ request.interceptors.response.use(
   }
 );
 
-export default request;
+export default {
+  get(url, params) {
+    return request({
+      method: 'get',
+      url: url,
+      params
+    })
+  },
+  post(url, data) {
+    return request({
+      method: 'post',
+      url: url,
+      data: data
+    })
+  },
+  form(url, formdata) {
+    return request({
+      method: 'post',
+      url: url,
+      data: formdata
+    })
+  }
+};

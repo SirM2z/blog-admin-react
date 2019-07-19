@@ -23,7 +23,9 @@ export const register = (username, email, password) => {
  * 用户列表
  * @param {number} page 页码
  * @param {number} pageSize 每页数量
+ * @param {string} order 升序/降序 asc/desc
+ * @param {string} orderBy 排序字段
  */
-export const userList = (page, pageSize) => {
-  return req.get('/user', {page, pageSize});
+export const userList = (page, pageSize, order, orderBy) => {
+  return req.get('/user', {page, pageSize, order, orderBy});
 }
