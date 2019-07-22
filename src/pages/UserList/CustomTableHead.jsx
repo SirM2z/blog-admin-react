@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import {
   TableCell,
   TableHead,
@@ -7,12 +6,40 @@ import {
   TableSortLabel,
   Checkbox,
 } from '@material-ui/core';
+import { UserContext } from './context';
+
+const headRows = [
+  { id: 'id', numeric: false, disablePadding: true, sortAble: false, label: 'ID' },
+  { id: 'username', numeric: false, disablePadding: false, sortAble: false, label: '用户名' },
+  { id: 'email', numeric: false, disablePadding: false, sortAble: false, label: '邮箱' },
+  { id: 'roles', numeric: false, disablePadding: false, sortAble: false, label: '角色' },
+  { id: 'created', numeric: false, disablePadding: false, sortAble: true, label: '注册时间' },
+  { id: 'actions', numeric: false, disablePadding: false, sortAble: false, label: '操作' },
+];
 
 const CustomTableHead = (props) => {
-  const { headRows, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const {state: {
+    order,
+    orderBy,
+    selected,
+    list
+  }, dispatch} = useContext(UserContext);
+  const numSelected = selected.length;
+  const rowCount = list.length;
+
   const createSortHandler = property => {
-    onRequestSort(property);
+    dispatch({
+      type: 'order',
+      payload: { property }
+    })
   };
+
+  function handleSelectAllClick(event) {
+    dispatch({
+      type: 'allCheck',
+      payload: { checked: event.target.checked }
+    })
+  }
 
   return (
     <TableHead>
@@ -22,7 +49,7 @@ const CustomTableHead = (props) => {
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={numSelected === rowCount && numSelected !== 0}
             disabled={rowCount === 0}
-            onChange={onSelectAllClick}
+            onChange={handleSelectAllClick}
             inputProps={{ 'aria-label': 'Select all desserts' }}
           />
         </TableCell>
@@ -49,15 +76,5 @@ const CustomTableHead = (props) => {
     </TableHead>
   );
 }
-
-CustomTableHead.propTypes = {
-  headRows: PropTypes.array.isRequired,
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.string.isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
 
 export default CustomTableHead;

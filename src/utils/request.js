@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { getLS } from './index';
 import { USER_TOKEN } from 'constant';
+import { logout } from 'services/user';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -56,8 +57,13 @@ request.interceptors.response.use(
   },
   error => {
     const {response} = error;
-    const errortext = response.data.message || codeMessage[response.status] || 'Error';
-    toast.error(`🦄 ${errortext}`);
+    if (response.status === 403 && response.data.message === 'Token error: jwt expired') {
+      logout();
+      toast.error(`🦄 需要重新登录`);
+    } else {
+      const errortext = response.data.message || codeMessage[response.status] || 'Error';
+      toast.error(`🦄 ${errortext}`);
+    }
     return Promise.reject(error);
   }
 );

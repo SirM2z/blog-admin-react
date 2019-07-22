@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Typography,
@@ -13,118 +13,87 @@ import {
 } from '@material-ui/core';
 import {
   Inbox as InboxIcon,
+  Edit as EditIcon
 } from '@material-ui/icons';
 import dayjs from 'dayjs';
 
 import TableToolbar from './TableToolbar';
 import CustomTableHead from './CustomTableHead';
 import Spin from 'components/Spin';
+import { UserContext } from './context';
 import { userList } from 'services/user';
-
-const headRows = [
-  { id: 'id', numeric: false, disablePadding: true, sortAble: false, label: 'ID' },
-  { id: 'username', numeric: false, disablePadding: false, sortAble: false, label: '用户名' },
-  { id: 'email', numeric: false, disablePadding: false, sortAble: false, label: '邮箱' },
-  { id: 'roles', numeric: false, disablePadding: false, sortAble: false, label: '角色' },
-  { id: 'created', numeric: false, disablePadding: false, sortAble: true, label: '注册时间' },
-];
 
 const User = () => {
   const classes = useStyles();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(1);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [totalCount, setTotalCount] = React.useState(0);
-  const [list, setList] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+  
+  const {state: {
+    order,
+    orderBy,
+    selected,
+    search,
+    page,
+    rowsPerPage,
+    totalCount,
+    list,
+    isLoading
+  }, dispatch} = useContext(UserContext);
 
   useEffect(() => {
-    setLoading(true);
-    userList(page, rowsPerPage, order.toUpperCase(), orderBy).then(res => {
-      setLoading(false);
-      setList(res.data);
-      setTotalCount(res.pagination.total);
-    }).catch(err => {
-      setLoading(false);
-      console.log({err});
+    dispatch({type: 'getData'})
+    userList(
+      page,
+      rowsPerPage,
+      order.toUpperCase(),
+      orderBy,
+      search
+    ).then(res => {
+      dispatch({
+        type: 'success',
+        payload: res
+      });
+    }).catch(() => {
+      dispatch({type: 'error'});
     })
-  }, [page, rowsPerPage, order, orderBy])
+  }, [page, rowsPerPage, order, orderBy, search, dispatch])
 
-  function handleRequestSort(property) {
-    if (orderBy === property) {
-      if (order === 'asc') {
-        setOrder('desc');
-      } else if (order === 'desc') {
-        setOrder('asc');
-        setOrderBy('');
-      }
-    } else {
-      setOrderBy(property);
-    }
-    setPage(1);
+  function handleClick(event, id) {
+    dispatch({
+      type: 'rowCheck',
+      payload: { id }
+    });
   }
 
-  function handleSelectAllClick(event) {
-    if (event.target.checked) {
-      const newSelecteds = list.map(n => n.id);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  }
-
-  function handleClick(event, name) {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
-  }
-
-  function handleChangePage(event, newPage) {
-    setPage(newPage);
+  function handleChangePage(event, page) {
+    dispatch({
+      type: 'goPage',
+      payload: { page: ++page }
+    });
   }
 
   function handleChangeRowsPerPage(event) {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+    dispatch({
+      type: 'perPage',
+      payload: { rowsPerPage: +event.target.value }
+    });
   }
 
-  const isSelected = name => selected.indexOf(name) !== -1;
+  function handleEdit(event, row) {
+    event.stopPropagation();
+  }
+
+  const isSelected = id => selected.indexOf(id) !== -1;
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <TableToolbar numSelected={selected.length} />
+        <TableToolbar />
         <div className={classes.tableWrapper}>
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size='medium'
+            size='medium' // small
           >
-            <CustomTableHead
-              headRows={headRows}
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={list.length}
-            />
+            <CustomTableHead />
             <TableBody>
               {list
                 .map((item, index) => {
@@ -154,12 +123,17 @@ const User = () => {
                       <TableCell align="left">{item.email}</TableCell>
                       <TableCell align="left">{item.roles || '会员'}</TableCell>
                       <TableCell align="left">{dayjs(item.created).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
+                      <TableCell align="center">
+                        <IconButton className='padding0' onClick={(e) => {handleEdit(e, item)}}>
+                          <EditIcon />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
             </TableBody>
           </Table>
-          {totalCount === 0 && (!loading) && (
+          {totalCount === 0 && (!isLoading) && (
             <React.Fragment>
               <IconButton disabled className={classes.embtyIconBtn}>
                 <InboxIcon className={classes.embtyIcon} />
@@ -169,14 +143,14 @@ const User = () => {
               </Typography>
             </React.Fragment>
           )}
-          {loading
+          {isLoading
             ? (<div className={classes.spinMask}><Spin /></div>)
             : null
           }
         </div>
         {totalCount !== 0
           ? (<TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
+              rowsPerPageOptions={[5, 10, 20, 50]}
               component="div"
               count={totalCount}
               rowsPerPage={rowsPerPage}

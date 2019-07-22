@@ -17,3 +17,7 @@ body {
 a {
   text-decoration: none;
 }
+
+#root .padding0 {
+  padding: 0;
+}

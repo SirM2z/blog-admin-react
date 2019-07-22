@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
@@ -20,23 +19,17 @@ import {
 
 import NotificationList from './NotificationList'
 import { getNotifications } from 'services/notification';
-import { setLS } from 'utils';
-import { USER_TOKEN } from 'constant';
+import { logout } from 'services/user';
 
 const Topbar = ({
   className,
   onToggleSidebar,
   isSidebarOpen,
-  title,
-  history
+  title
 }) => {
   const classes = useStyles();
   const notificationsLimit = 4;
   const rootClassName = classNames(classes.root, className);
-  function handleSignOut() {
-    setLS(USER_TOKEN, '');
-    history.push('/login');
-  }
 
   const [notifications, setNotifications] = useState([]);
   const [notificationsCount, setNotificationsCount] = useState(0);
@@ -98,7 +91,7 @@ const Topbar = ({
             </IconButton>
             <IconButton
               className={classes.signOutButton}
-              onClick={handleSignOut}
+              onClick={logout}
             >
               <InputIcon />
             </IconButton>
@@ -129,7 +122,6 @@ const Topbar = ({
 
 Topbar.propTypes = {
   className: PropTypes.string,
-  history: PropTypes.object.isRequired,
   isSidebarOpen: PropTypes.bool,
   onToggleSidebar: PropTypes.func,
   title: PropTypes.string
@@ -175,4 +167,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default withRouter(Topbar);
+export default Topbar;

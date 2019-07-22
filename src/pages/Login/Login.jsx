@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { withRouter } from 'react-router-dom';
 import {
   Grid,
   CircularProgress,
@@ -14,13 +13,14 @@ import classnames from "classnames";
 import { makeStyles } from '@material-ui/core/styles';
 import { toast } from 'react-toastify';
 
-import logo from "./logo.svg";
-import google from "assets/svg/google.svg";
 import { login, register } from 'services/user';
 import { setLS } from 'utils';
 import { USER_TOKEN, USER_INFO } from 'constant';
+import history from 'Routes/history';
+import logo from "./logo.svg";
+import google from "assets/svg/google.svg";
 
-const Login = ({ history }) => {
+const Login = () => {
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState('');
@@ -423,4 +423,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default withRouter(Login);
+export default Login;

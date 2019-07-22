@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import {
@@ -7,15 +6,33 @@ import {
   Typography,
   IconButton,
   Tooltip,
+  Input,
+  InputAdornment
 } from '@material-ui/core';
 import {
   Delete as DeleteIcon,
-  FilterList as FilterListIcon
+  FilterList as FilterListIcon,
+  Search as SearchIcon,
+  Clear as ClearIcon,
 } from '@material-ui/icons';
+import { UserContext } from './context';
 
-const TableToolbar = props => {
+const TableToolbar = () => {
   const classes = useToolbarStyles();
-  const { numSelected } = props;
+  const {state: {
+    selected
+  }, dispatch} = React.useContext(UserContext);
+  const [query, setQuery] = React.useState('');
+  const numSelected = selected.length;
+
+  function handleSearchEnter(event) {
+    if (event.key === 'Enter') {
+      dispatch({
+        type: 'search',
+        payload: { search: query}
+      })
+    }
+  }
 
   return (
     <Toolbar
@@ -43,19 +60,40 @@ const TableToolbar = props => {
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="Filter list">
-            <IconButton aria-label="Filter list">
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
+          <Toolbar>
+            <Input
+              placeholder="搜索用户名"
+              className={classes.searchInput}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleSearchEnter}
+              startAdornment={<InputAdornment position="start">
+                <Tooltip title="Search">
+                  <SearchIcon  aria-label="Search" />
+                </Tooltip>
+              </InputAdornment>}
+              endAdornment={<InputAdornment position="end">
+                <Tooltip title="Clear value">
+                  <IconButton
+                    className='padding0'
+                    aria-label="Clear value"
+                    onClick={() => {setQuery('')}}
+                  >
+                    <ClearIcon />
+                  </IconButton>
+                </Tooltip>
+              </InputAdornment>}
+            />
+            <Tooltip title="Filter list">
+              <IconButton aria-label="Filter list">
+                <FilterListIcon />
+              </IconButton>
+            </Tooltip>
+          </Toolbar>
         )}
       </div>
     </Toolbar>
   );
-};
-
-TableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
 };
 
 const useToolbarStyles = makeStyles(theme => ({
@@ -78,6 +116,9 @@ const useToolbarStyles = makeStyles(theme => ({
   },
   actions: {
     color: theme.palette.text.info,
+  },
+  searchInput: {
+    width: '246px'
   },
   title: {
     flex: '0 0 auto',

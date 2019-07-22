@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
-import { USER_TOKEN } from './constant';
-import { getLS } from './utils';
-import Layout from './layouts';
-import Login from './pages/Login';
-import Users from './pages/UserList';
+import { USER_TOKEN } from 'constant';
+import { getLS } from 'utils';
+import Layout from 'layouts';
+import Login from 'pages/Login';
+import Users from 'pages/UserList';
 
 function NoMatch({location}) {
   return (<h3>
