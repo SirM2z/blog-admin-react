@@ -19,6 +19,7 @@ import dayjs from 'dayjs';
 
 import TableToolbar from './TableToolbar';
 import CustomTableHead from './CustomTableHead';
+import EditDialog from './EditDialog';
 import Spin from 'components/Spin';
 import { UserContext } from './context';
 import { userList } from 'services/user';
@@ -79,6 +80,7 @@ const User = () => {
 
   function handleEdit(event, row) {
     event.stopPropagation();
+    dispatch({type: 'openEditDialog'});
   }
 
   const isSelected = id => selected.indexOf(id) !== -1;
@@ -167,6 +169,7 @@ const User = () => {
           : null
         }
       </Paper>
+      <EditDialog />
     </div>
   );
 }

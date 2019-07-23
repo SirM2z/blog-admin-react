@@ -11,6 +11,7 @@ const initState = {
   totalCount: 0,
   list: [],
   isLoading: true,
+  isEditDialogShow: false
 }
 
 function UserReducer(state, action) {
@@ -89,6 +90,11 @@ function UserReducer(state, action) {
         ...state,
         rowsPerPage: action.payload.rowsPerPage,
         page: 1
+      }
+    case 'openEditDialog':
+      return {
+        ...state,
+        isEditDialogShow: !state.isEditDialogShow
       }
   default: 
     return state;
