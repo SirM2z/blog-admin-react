@@ -125,7 +125,7 @@ const User = () => {
                       <TableCell align="left">{item.email}</TableCell>
                       <TableCell align="left">{item.roles || '会员'}</TableCell>
                       <TableCell align="left">{dayjs(item.created).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
-                      <TableCell align="center">
+                      <TableCell align="left">
                         <IconButton className='padding0' onClick={(e) => {handleEdit(e, item)}}>
                           <EditIcon />
                         </IconButton>
