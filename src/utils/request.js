@@ -26,7 +26,9 @@ const codeMessage = {
 
 // create an axios instance
 const request = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_API_PRO
+    : process.env.REACT_APP_API_DEV,
   // withCredentials: true,
   timeout: 5000
 });
