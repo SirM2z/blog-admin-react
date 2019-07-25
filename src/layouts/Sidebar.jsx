@@ -48,7 +48,7 @@ const Sidebar = ({ className, isSidebarOpen }) => {
           className={classes.logoLink}
           to="/app"
         >
-          <Typography variant="h3">Money Above All</Typography>
+          <Typography variant="h3">Ryan's Blog Admin</Typography>
         </Link>
       </div>
       {isSidebarOpen ? (

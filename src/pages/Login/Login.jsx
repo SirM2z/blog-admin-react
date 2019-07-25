@@ -9,7 +9,7 @@ import {
   TextField,
   Fade
 } from "@material-ui/core";
-import classnames from "classnames";
+// import classnames from "classnames";
 import { makeStyles } from '@material-ui/core/styles';
 import { toast } from 'react-toastify';
 
@@ -17,8 +17,8 @@ import { login, register } from 'services/user';
 import { setLS } from 'utils';
 import { USER_TOKEN, USER_INFO } from 'constant';
 import history from 'Routes/history';
-import logo from "./logo.svg";
-import google from "assets/svg/google.svg";
+// import icon from 'assets/img/icon.png';
+// import google from "assets/svg/google.svg";
 
 const Login = () => {
   const classes = useStyles();
@@ -27,13 +27,18 @@ const Login = () => {
 
   const [activeTabId, setActiveTabId] = useState(0);
   function handleTabChange(e, id) {
-    setLoginError('');
-    setActiveTabId(id);
+    if (id === 1) {
+      setLoginError('Not yet open for registration');
+      setActiveTabId(id);
+    } else {
+      setLoginError('');
+      setActiveTabId(id);
+    }
   }
 
-  const [username, setUsername] = useState("Ryan");
-  const [email, setEmail] = useState("ryan@ryanc.top");
-  const [password, setPassword] = useState("password");
+  const [username, setUsername] = useState(""); // Ryan
+  const [email, setEmail] = useState(""); // ryan@ryanc.top
+  const [password, setPassword] = useState(""); // password
   function handleInput(e, input = "login") {
     if (loginError) {
       setLoginError('');
@@ -80,8 +85,8 @@ const Login = () => {
   return (
     <Grid container className={classes.container}>
       <div className={classes.logotypeContainer}>
-        <img src={logo} alt="logo" className={classes.logotypeImage} />
-        <Typography className={classes.logotypeText}>Material Admin</Typography>
+        {/* <img src={icon} alt="icon" className={classes.logotypeImage} /> */}
+        <Typography className={classes.logotypeText}>Blog Admin</Typography>
       </div>
       <div className={classes.formContainer}>
         <div className={classes.form}>
@@ -100,7 +105,7 @@ const Login = () => {
               <Typography variant="h1" className={classes.greeting}>
                 Good Morning, User
               </Typography>
-              <Button size="large" className={classes.googleButton}>
+              {/* <Button size="large" className={classes.googleButton}>
                 <img src={google} alt="google" className={classes.googleIcon} />
                 &nbsp;Sign in with Google
               </Button>
@@ -108,7 +113,7 @@ const Login = () => {
                 <div className={classes.formDivider} />
                 <Typography className={classes.formDividerWord}>or</Typography>
                 <div className={classes.formDivider} />
-              </div>
+              </div> */}
               <Fade in={Boolean(loginError)}>
                 <Typography color="secondary" className={classes.errorMessage}>
                   {loginError}
@@ -157,17 +162,18 @@ const Login = () => {
                     variant="contained"
                     color="primary"
                     size="large"
+                    fullWidth
                   >
                     Login
                   </Button>
                 )}
-                <Button
+                {/* <Button
                   color="primary"
                   size="large"
                   className={classes.forgetButton}
                 >
                   Forget Password
-                </Button>
+                </Button> */}
               </div>
             </React.Fragment>
           )}
@@ -235,11 +241,12 @@ const Login = () => {
                 ) : (
                   <Button
                     onClick={handleLoginButtonClick}
-                    disabled={
-                      email.length === 0 ||
-                      password.length === 0 ||
-                      username.length === 0
-                    }
+                    // disabled={
+                    //   email.length === 0 ||
+                    //   password.length === 0 ||
+                    //   username.length === 0
+                    // }
+                    disabled
                     size="large"
                     variant="contained"
                     color="primary"
@@ -250,7 +257,7 @@ const Login = () => {
                   </Button>
                 )}
               </div>
-              <div className={classes.formDividerContainer}>
+              {/* <div className={classes.formDividerContainer}>
                 <div className={classes.formDivider} />
                 <Typography className={classes.formDividerWord}>or</Typography>
                 <div className={classes.formDivider} />
@@ -264,7 +271,7 @@ const Login = () => {
               >
                 <img src={google} alt="google" className={classes.googleIcon} />
                 &nbsp;Sign in with Google
-              </Button>
+              </Button> */}
             </React.Fragment>
           )}
         </div>
@@ -288,7 +295,10 @@ const useStyles = makeStyles(theme => ({
     left: 0
   },
   logotypeContainer: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundImage: 'url("https://source.unsplash.com/random")',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
     width: "60%",
     height: "100%",
     display: "flex",
@@ -303,10 +313,12 @@ const useStyles = makeStyles(theme => ({
     }
   },
   logotypeImage: {
+    opacity: '0.5',
     width: 165,
     marginBottom: theme.spacing(10)
   },
   logotypeText: {
+    opacity: '0.5',
     color: "white",
     fontWeight: 400,
     fontSize: 84,
@@ -383,6 +395,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.text.hint + "40"
   },
   errorMessage: {
+    marginTop: theme.spacing(3),
     textAlign: "center"
   },
   textFieldUnderline: {
