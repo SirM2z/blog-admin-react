@@ -20,6 +20,8 @@ import {
   Code as CodeIcon,
   Store as StoreIcon
 } from '@material-ui/icons';
+import connectedWorldSvg from 'assets/svg/connected_world.svg';
+import emptyPng from 'assets/img/empty.png';
 
 const icons = {
   order: {
@@ -108,7 +110,7 @@ const NotificationList = ({
             <img
               alt="Empty list"
               className={classes.emptyImage}
-              src="/images/empty.png"
+              src={emptyPng}
             />
           </div>
           <Typography variant="h4">什么也没有...</Typography>
@@ -136,7 +138,7 @@ const useStyles = makeStyles(theme => ({
   },
   header: {
     backgroundColor: theme.palette.background.default,
-    backgroundImage: 'url("/images/connected_world.svg")',
+    backgroundImage: `url(${connectedWorldSvg})`,
     backgroundPositionX: 'right',
     backgroundPositionY: 'center',
     backgroundRepeat: 'no-repeat',

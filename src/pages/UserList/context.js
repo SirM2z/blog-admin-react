@@ -7,7 +7,7 @@ const initState = {
   query: '',
   search: '',
   page: 1,
-  rowsPerPage: 10,
+  rowsPerPage: 5,
   totalCount: 0,
   list: [],
   isLoading: true,
