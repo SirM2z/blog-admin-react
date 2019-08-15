@@ -76,7 +76,7 @@ const Topbar = ({
             >
               { isSidebarOpen ? <ChevronLeftIcon /> : <MenuIcon />}
             </IconButton>
-            <Typography className={classes.title} variant="h4" noWrap>{title}</Typography>
+            <Typography className={classes.title} variant="h5" noWrap>{title}</Typography>
             <IconButton
               className={classes.notificationsButton}
               onClick={handleShowNotifications}

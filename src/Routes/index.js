@@ -16,10 +16,12 @@ function NoMatch({location}) {
 const pageRoutes = [
   {
     path: "/",
+    title: "Ryan's Blog Admin",
     redirect: "/app"
   },
   {
     path: "/login",
+    title: "login",
     component: Login
   },
   {
@@ -32,6 +34,7 @@ const pageRoutes = [
       },
       {
         path: "/app/users",
+        title: "User List",
         auth: true,
         component: Users
       },

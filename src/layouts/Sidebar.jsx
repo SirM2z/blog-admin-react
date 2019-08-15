@@ -86,14 +86,14 @@ const Sidebar = ({ className, isSidebarOpen }) => {
             [classes.listItemOpen]: isSidebarOpen
           })}
           component={ListItemLink}
-          to="/app/users"
+          to="/app/articles"
         >
           <ListItemIcon className={classes.listItemIcon}>
-            <PeopleIcon />
+            <NoteIcon />
           </ListItemIcon>
           <ListItemText
             classes={{ primary: classes.listItemText }}
-            primary="用户管理"
+            primary="文章管理"
           />
         </ListItem>
         <ListItem
@@ -104,14 +104,14 @@ const Sidebar = ({ className, isSidebarOpen }) => {
             [classes.listItemOpen]: isSidebarOpen
           })}
           component={ListItemLink}
-          to="/app/articles"
+          to="/app/users"
         >
           <ListItemIcon className={classes.listItemIcon}>
-            <NoteIcon />
+            <PeopleIcon />
           </ListItemIcon>
           <ListItemText
             classes={{ primary: classes.listItemText }}
-            primary="文章管理"
+            primary="用户管理"
           />
         </ListItem>
         <ListItem

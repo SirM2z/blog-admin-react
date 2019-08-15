@@ -12,7 +12,7 @@ import Topbar from './Topbar';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 
-const Layout = ({ title, ...props }) => {
+const Layout = ({ ...props }) => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(true);
   const theme = useTheme();
@@ -24,6 +24,21 @@ const Layout = ({ title, ...props }) => {
   function handleToggleOpen() {
     setIsOpen(prevIsOpen => !prevIsOpen)
   }
+  function matchTitle() {
+    const { location: { pathname }, routes } = props;
+    function mapRoutes(routes) {
+      for(let i = 0; i < routes.length; i++) {
+        if (routes[i].path === pathname) {
+          return routes[i].title;
+        }
+        if (Array.isArray(routes[i].routes)) {
+          mapRoutes(routes[i].routes);
+        }
+      }
+      return "荒芜地带";
+    }
+    return mapRoutes(routes);
+  }
 
   return (
     <div className={classes.root}>
@@ -31,8 +46,7 @@ const Layout = ({ title, ...props }) => {
       <Topbar
         isSidebarOpen={isOpen}
         onToggleSidebar={handleToggleOpen}
-        // title={title}
-        title='Layout'
+        title={matchTitle()}
       />
       <Drawer
         variant="permanent"

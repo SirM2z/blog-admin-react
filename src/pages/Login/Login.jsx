@@ -81,6 +81,11 @@ const Login = () => {
       registerUser(username, email, password);
     }
   }
+  function handleSearchEnter(event) {
+    if (event.key === 'Enter') {
+      handleLoginButtonClick();
+    }
+  }
 
   return (
     <Grid container className={classes.container}>
@@ -144,6 +149,7 @@ const Login = () => {
                 }}
                 value={password}
                 onChange={e => handleInput(e, "password")}
+                onKeyDown={handleSearchEnter}
                 margin="normal"
                 placeholder="Password"
                 type="password"
