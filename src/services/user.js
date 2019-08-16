@@ -9,7 +9,7 @@ import { USER_TOKEN } from 'constant';
  * @param {string} password 密码
  */
 export const login = (email, password) => {
-  return req.post('/login', {email, password});
+  return req.post('/user/login', {email, password});
 }
 
 /**
@@ -27,7 +27,7 @@ export const logout = () => {
  * @param {string} password 密码
  */
 export const register = (username, email, password) => {
-  return req.post('/register', {username, email, password});
+  return req.post('/user/register', {username, email, password});
 }
 
 /**
@@ -40,4 +40,15 @@ export const register = (username, email, password) => {
  */
 export const userList = (page, pageSize, order, orderBy, search) => {
   return req.get('/user', {page, pageSize, order, orderBy, search});
+}
+
+export const userUpdate = (id, username = '', password = '') => {
+  let data = {};
+  if (username) {
+    data.username = username;
+  }
+  if (password) {
+    data.password = password;
+  }
+  return req.put(`/user/${id}`, data);
 }

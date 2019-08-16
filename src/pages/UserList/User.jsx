@@ -28,6 +28,7 @@ const User = () => {
   const classes = useStyles();
   
   const {state: {
+    getList,
     order,
     orderBy,
     selected,
@@ -55,7 +56,7 @@ const User = () => {
     }).catch(() => {
       dispatch({type: 'error'});
     })
-  }, [page, rowsPerPage, order, orderBy, search, dispatch])
+  }, [page, rowsPerPage, order, orderBy, search, dispatch, getList])
 
   function handleClick(event, id) {
     dispatch({
@@ -80,7 +81,10 @@ const User = () => {
 
   function handleEdit(event, row) {
     event.stopPropagation();
-    dispatch({type: 'openEditDialog'});
+    dispatch({
+      type: 'openEditDialog',
+      payload: { data: row },
+    });
   }
 
   const isSelected = id => selected.indexOf(id) !== -1;

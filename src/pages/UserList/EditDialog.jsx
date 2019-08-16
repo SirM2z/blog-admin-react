@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   Button,
   TextField,
@@ -7,10 +7,13 @@ import {
   DialogContent,
   DialogTitle,
   DialogContentText,
+  CircularProgress,
   Grow
 } from '@material-ui/core';
+import { toast } from 'react-toastify';
 
 import { UserContext } from './context';
+import { userUpdate } from 'services/user';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Grow ref={ref} {...props} />;
@@ -18,11 +21,35 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function EditDialog() {
   const {state: {
-    isEditDialogShow
+    isEditDialogShow,
+    editData
   }, dispatch} = useContext(UserContext);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [username, setUsername] = React.useState();
+  const [password, setPassword] = React.useState('');
+
+  useEffect(() => {
+    setUsername(editData.username || '');
+  }, [editData]);
 
   function handleToggleShow() {
     dispatch({type: 'openEditDialog'});
+  }
+
+  function handleSubmit() {
+    if (!username.trim() && !password.trim()) {
+      toast.info(`🦄 必须输入一项`);
+      return;
+    }
+    setIsLoading(true);
+    userUpdate(editData.id, username, password).then(() => {
+      setIsLoading(false);
+      dispatch({type: 'getList'});
+      dispatch({type: 'openEditDialog'});
+    }).catch(() => {
+      setIsLoading(false);
+    });
   }
 
   return (
@@ -41,12 +68,16 @@ export default function EditDialog() {
           </DialogContentText>
           <TextField
             autoFocus
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             id="username"
             label="用户名"
             type="text"
             fullWidth
           />
           <TextField
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             id="password"
             label="密码"
             type="password"
@@ -57,9 +88,13 @@ export default function EditDialog() {
           <Button onClick={handleToggleShow} color="primary">
             取消
           </Button>
-          <Button onClick={handleToggleShow} color="primary">
-            确认
-          </Button>
+          {isLoading ? (
+            <CircularProgress size={26} />
+          ) : (
+            <Button onClick={handleSubmit} color="primary">
+              确认
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
     </div>

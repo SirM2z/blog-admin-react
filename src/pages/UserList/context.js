@@ -1,21 +1,28 @@
 import React from 'react';
 
 const initState = {
+  getList: false, // 获取数据，主动触发 useEffect
   order: 'asc',
   orderBy: '',
   selected: [],
   query: '',
   search: '',
   page: 1,
-  rowsPerPage: 5,
+  rowsPerPage: 10,
   totalCount: 0,
   list: [],
   isLoading: true,
-  isEditDialogShow: false
+  isEditDialogShow: false,
+  editData: {},
 }
 
 function UserReducer(state, action) {
   switch(action.type) {
+    case 'getList':
+      return {
+        ...state,
+        getList: !state.getList,
+      }
     case 'getData':
       return {
         ...state,
@@ -94,7 +101,8 @@ function UserReducer(state, action) {
     case 'openEditDialog':
       return {
         ...state,
-        isEditDialogShow: !state.isEditDialogShow
+        isEditDialogShow: !state.isEditDialogShow,
+        editData: action.payload ? action.payload.data || {} : {},
       }
   default: 
     return state;

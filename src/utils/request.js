@@ -73,21 +73,35 @@ request.interceptors.response.use(
 export default {
   get(url, params) {
     return request({
-      method: 'get',
+      method: 'GET',
       url: url,
       params
     })
   },
   post(url, data) {
     return request({
-      method: 'post',
+      method: 'POST',
+      url: url,
+      data: data
+    })
+  },
+  put(url, data) {
+    return request({
+      method: 'PUT',
+      url: url,
+      data: data
+    })
+  },
+  delete(url, data) {
+    return request({
+      method: 'DELETE',
       url: url,
       data: data
     })
   },
   form(url, formdata) {
     return request({
-      method: 'post',
+      method: 'POST',
       url: url,
       data: formdata
     })
